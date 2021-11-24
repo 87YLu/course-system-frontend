@@ -61,12 +61,12 @@ export const fetchMiddleware = _storeAPI => next => async action => {
       }
 
       resetRequestId()
+    } else {
+      next({
+        type: 'fetch/fetchFailure',
+        payload: { requestId, data: response.message },
+      })
     }
-  } else {
-    next({
-      type: `fetch/fetchFailure`,
-      payload: { requestId, data: response?.message },
-    })
   }
 
   requestMap.delete(requestKey)

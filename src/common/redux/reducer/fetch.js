@@ -29,7 +29,6 @@ export const fetch = createSlice({
         fetchState: FetchState.Success,
       }
     },
-
     fetchFailure(state, action) {
       const { payload } = action
       const { requestId, data } = payload
