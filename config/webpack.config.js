@@ -325,6 +325,11 @@ module.exports = function (webpackEnv) {
         .map(ext => `.${ext}`)
         .filter(ext => useTypeScript || !ext.includes('ts')),
       alias: {
+        '@src': path.resolve(__dirname, "../src"),
+        '@common': path.resolve(__dirname, "../src/common"),
+        '@constant': path.resolve(__dirname, "../src/common/constant"),
+        '@hooks': path.resolve(__dirname, "../src/common/hooks"),
+        '@component': path.resolve(__dirname, "../src/component"),
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
@@ -407,7 +412,7 @@ module.exports = function (webpackEnv) {
                     },
                   ],
                 ],
-                
+
                 plugins: [
                   [
                     require.resolve('babel-plugin-named-asset-import'),
@@ -452,7 +457,7 @@ module.exports = function (webpackEnv) {
                 cacheDirectory: true,
                 // See #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,
-                
+
                 // Babel sourcemaps are needed for debugging into node_modules
                 // code.  Without the options below, debuggers like VSCode
                 // show incorrect code and set breakpoints on the wrong lines.
