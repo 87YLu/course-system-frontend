@@ -8,9 +8,9 @@ import { Route, BrowserRouter, Routes } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import componentRouter from '@component'
 import store from '@common/redux'
-
-// import Login from './component/Login'
-// import HomePage from './component/HomePage'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
+moment.locale('zh-cn')
 
 const history = createBrowserHistory()
 
@@ -22,8 +22,6 @@ ReactDOM.render(
           {componentRouter.map(component => (
             <Route {...component} />
           ))}
-          {/* <Route path="/" element={<Login />} exact />
-          <Route path="/HomePage/*" element={<HomePage />} /> */}
         </Routes>
       </BrowserRouter>
     </Provider>

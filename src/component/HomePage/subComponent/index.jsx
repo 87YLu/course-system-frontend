@@ -1,8 +1,11 @@
+import Course from './Course'
+
 const homePageRouter = [
   {
-    path: '1',
-    key: '1',
-    // element: < />,
+    path: 'course',
+    key: 'course',
+    name: '课程信息',
+    element: <Course />,
   },
 ]
 

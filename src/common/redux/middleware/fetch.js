@@ -1,5 +1,6 @@
 import axios from 'axios'
 import md5 from 'blueimp-md5'
+import { message } from 'antd'
 
 const requestMap = new Map()
 
@@ -35,6 +36,7 @@ export const fetchMiddleware = _storeAPI => next => async action => {
         callback && callback(response)
       })
       .catch(err => {
+        message.error(err.message)
         next({
           type: 'fetch/fetchFailure',
           payload: { requestId, data: err.message },
@@ -62,6 +64,7 @@ export const fetchMiddleware = _storeAPI => next => async action => {
 
       resetRequestId()
     } else {
+      message.error(response.message)
       next({
         type: 'fetch/fetchFailure',
         payload: { requestId, data: response.message },
