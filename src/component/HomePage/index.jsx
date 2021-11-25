@@ -1,11 +1,17 @@
 import React from 'react'
 import { Layout, Menu, Card } from 'antd'
 import { Link, Routes, Route } from 'react-router-dom'
+import { useGetUser } from '@hooks'
 import homePageRouter from './subComponent'
 
 const { Header, Content } = Layout
 
 export default function HomePage() {
+  const user = useGetUser()
+  window.onbeforeunload = () => {
+    localStorage.setItem('user', JSON.stringify(user))
+  }
+
   return (
     <Layout>
       <Header>
@@ -25,14 +31,17 @@ export default function HomePage() {
       <Content
         style={{
           height: 'calc(100vh - 67px)',
-          maxHeight: 'calc(100vh - 67px)',
-          overflow: 'auto',
         }}
       >
         <Card
           style={{
-            minHeight: 'calc(100% - 40px)',
+            height: 'calc(100% - 40px)',
+            overflow: 'auto',
             margin: '20px 20px 0',
+          }}
+          bodyStyle={{
+            height: '100%',
+            width: '100%',
           }}
           bordered={false}
         >
