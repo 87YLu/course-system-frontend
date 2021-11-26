@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, Menu, Card, Button, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import { Link, Routes, Route, useNavigate} from 'react-router-dom'
+import { Link, Routes, Route, useNavigate } from 'react-router-dom'
 import { useGetUser } from '@hooks'
 import { roleEnum, getLocationPath } from '@common/utils'
 import homePageRouter from './subComponent'
@@ -24,13 +24,12 @@ export default function HomePage() {
       content: '确定退出登录？',
       onOk() {
         navigate('/')
-        // window.location.reload()
       },
     })
   }
 
   return (
-    <Layout>
+    <Layout style={{ minWidth: '800px', minHeight: '600px'}}>
       <Header>
         <div className="logo">
           <div>选课系统</div>
@@ -42,6 +41,7 @@ export default function HomePage() {
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={getLocationPath(2)}
+          style={{ width: 'auto' }}
         >
           {homePageRouter.map(component => {
             const { linkTo, key, name } = component

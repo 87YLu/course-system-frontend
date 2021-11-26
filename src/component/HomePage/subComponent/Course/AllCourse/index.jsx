@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
 import { Button, message, Modal } from 'antd'
+import moment from 'moment'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { API, FetchState } from '@constant'
 import { PubTable } from '@Public'
@@ -11,11 +12,14 @@ const { confirm } = Modal
 
 export default function AllCourse() {
   const { role, id } = useGetUser()
-
   const [selectCourseState, makeSelectCourseRequest] = useFetch({
     url: API.selectCourse,
     method: 'post',
   })
+
+  const formatSelectTime = time => {
+    return moment(time).format('YYYY-MM-DD HH:mm')
+  }
 
   const pubTableProps = {
     columns: [
@@ -33,6 +37,20 @@ export default function AllCourse() {
         title: '学分',
         dataIndex: 'credit',
         key: 'credit',
+      },
+      {
+        title: '选课时间',
+        dataIndex: 'selectTime',
+        key: 'selectTime',
+        render: (_, record) => {
+          const { selectStart, selectEnd } = record
+          return (
+            <div>
+              开始：{formatSelectTime(selectStart)}<br />
+              结束：{formatSelectTime(selectEnd)}
+            </div>
+          )
+        },
       },
       {
         title: '上课地点',
@@ -88,9 +106,5 @@ export default function AllCourse() {
     })
   }
 
-  return (
-    <div className="all-course">
-      <PubTable {...pubTableProps} />
-    </div>
-  )
+  return <PubTable {...pubTableProps} />
 }

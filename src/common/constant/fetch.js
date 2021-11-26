@@ -3,6 +3,7 @@ export const API = {
   exportUserTemplate: '/api/user/exportUserTemplate', // 获取用户信息模板
   importUserInfo: '/api/user/importUserInfo', // 导入用户信息
   updatePassword: '/api/user/updatePassword', // 修改密码
+  showAllUserInPage: '/api/user/showAllUserInPage', // 获取用户
   exportGradeExcel: '/api/course/exportGradeExcel', // 导出课程学生成绩信息
   exportStudentCourseInfo: '/api/course/exportStudentCourseInfo', // 导出选课学生名单
   teacherImportGrade: '/api/course/teacherImportGrade', // 导入课程学生成绩信息

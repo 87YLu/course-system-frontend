@@ -43,7 +43,7 @@ export default function Login() {
           // TODO
           initialValues={{
             account: '3119004911',
-            password: '004911',
+            password: '123',
           }}
         >
           <Form.Item

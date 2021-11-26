@@ -1,3 +1,4 @@
+import axios from 'axios'
 export class Enum {
   constructor(originData) {
     this.enum = originData
@@ -40,4 +41,55 @@ export const getLocationPath = level => {
   const href = window.location.href
   const origin = window.location.origin
   return href.replace(origin, '').split('/')[level]
+}
+
+export const UploadFile = ({ data, url, callback }) => {
+  const param = new FormData()
+
+  Object.keys(data).forEach(key => {
+    param.append(key, data[key])
+  })
+
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }
+
+  axios.post(url, param, config).finally(res => {
+    console.log(res)
+    callback && callback()
+  })
+}
+
+export const ExportExcel = ({ url, fileName = 'excel', params, callback }) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    responseType: 'arraybuffer',
+  }
+
+  if (params) {
+    config.params = {
+      ...params,
+    }
+  }
+
+  axios
+    .get(url, config)
+    .then(res => {
+      const url = window.URL.createObjectURL(
+        new Blob([res.data], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        }),
+      )
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      link.click()
+    })
+    .finally(() => {
+      callback && callback()
+    })
 }
