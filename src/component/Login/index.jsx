@@ -24,7 +24,7 @@ export default function Login() {
 
   useEffect(() => {
     if (loginFetchState.fetchState === FetchState.Success) {
-      navigate('/homePage/course')
+      navigate('/homePage/course/all')
       message.success('登录成功')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

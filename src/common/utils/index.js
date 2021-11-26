@@ -23,3 +23,21 @@ export const roleEnum = new Enum({
   1: '学生',
   2: '老师',
 })
+
+export const getTop = element => {
+  let realTop = element.offsetTop
+  let parent = element.offsetParent
+
+  while (parent != null) {
+    realTop += parent.offsetTop
+    parent = parent.offsetParent
+  }
+
+  return realTop
+}
+
+export const getLocationPath = level => {
+  const href = window.location.href
+  const origin = window.location.origin
+  return href.replace(origin, '').split('/')[level]
+}
