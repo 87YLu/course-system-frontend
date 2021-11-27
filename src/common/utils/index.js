@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { message } from 'antd'
 export class Enum {
   constructor(originData) {
     this.enum = originData
@@ -56,10 +57,19 @@ export const UploadFile = ({ data, url, callback }) => {
     },
   }
 
-  axios.post(url, param, config).finally(res => {
-    console.log(res)
-    callback && callback()
-  })
+  axios
+    .post(url, param, config)
+    .then(res => {
+      if (res.data.success === false) {
+        message.error(res.data.message)
+      }
+    })
+    .catch(err => {
+      message.error(err.message)
+    })
+    .finally(_ => {
+      callback && callback()
+    })
 }
 
 export const ExportExcel = ({ url, fileName = 'excel', params, callback }) => {
@@ -89,7 +99,10 @@ export const ExportExcel = ({ url, fileName = 'excel', params, callback }) => {
       link.setAttribute('download', fileName)
       link.click()
     })
-    .finally(() => {
+    .catch(err => {
+      message.error(err.message)
+    })
+    .finally(_ => {
       callback && callback()
     })
 }
