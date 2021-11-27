@@ -3,7 +3,7 @@ import React, { useState, useEffect, useImperativeHandle, useRef } from 'react'
 import { Table } from 'antd'
 import { useFetch } from '@hooks'
 import { FetchState } from '@constant'
-import { getTop } from '@common/utils'
+import { getTop } from '@utils'
 
 function PubTable({ columns, ajaxConfig, tableRef, ...otherProps }) {
   const { method, url, ...otherConfig } = ajaxConfig

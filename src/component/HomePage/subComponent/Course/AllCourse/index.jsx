@@ -6,7 +6,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { API, FetchState } from '@constant'
 import { PubTable } from '@Public'
 import { useGetUser, useFetch } from '@hooks'
-import { roleEnum } from '@common/utils'
+import { roleEnum } from '@utils'
 
 const { confirm } = Modal
 

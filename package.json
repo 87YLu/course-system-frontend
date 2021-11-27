@@ -158,5 +158,5 @@
       "react-app"
     ]
   },
-  "proxy": "http://localhost:7020"
+  "proxy": "http://106.54.76.56:7020"
 }

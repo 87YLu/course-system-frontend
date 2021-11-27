@@ -4,7 +4,7 @@ import { Button } from 'antd'
 import { useGetUser } from '@hooks'
 import { API } from '@constant'
 import { PubTable } from '@Public'
-import { roleEnum } from '@common/utils'
+import { roleEnum } from '@utils'
 import OpenCourseModal from './OpenCourseModal'
 
 export default function MyCourse() {

@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { Button, Upload, Space } from 'antd'
-import { UploadFile, ExportExcel, roleEnum } from '@common/utils'
+import { UploadFile, ExportExcel, roleEnum } from '@utils'
 import { API } from '@constant'
 import { PubTable } from '@Public'
 
@@ -55,7 +55,7 @@ export default function Manager() {
     ajaxConfig: {
       url: API.showAllUserInPage,
       method: 'get',
-      data: {
+      params: {
         roleId: 1
       }
     },

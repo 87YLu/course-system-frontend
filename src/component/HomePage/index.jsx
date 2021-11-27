@@ -3,7 +3,7 @@ import { Layout, Menu, Card, Button, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Link, Routes, Route, useNavigate } from 'react-router-dom'
 import { useGetUser } from '@hooks'
-import { roleEnum, getLocationPath } from '@common/utils'
+import { roleEnum, getLocationPath } from '@utils'
 import homePageRouter from './subComponent'
 import './index.less'
 
@@ -41,7 +41,7 @@ export default function HomePage() {
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={getLocationPath(2)}
-          style={{ width: 'auto' }}
+          style={{ width: '250px' }}
         >
           {homePageRouter.map(component => {
             const { linkTo, key, name } = component
