@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
-import { Modal, Form, Input, InputNumber, DatePicker, Select } from 'antd'
+import { Modal, Form, Input, InputNumber, DatePicker, Select, Cascader } from 'antd'
 import { useGetUser, useFetch } from '@hooks'
 import { API, FetchState } from '@constant'
-import { building, classroom, clazz } from './addressData'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -12,11 +11,13 @@ const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 },
 }
+const clazz = new Array(9).fill(0).map((_, index) => index + 1)
 
 export default function OpenCourseModal({ visible, setVisible, tableRef }) {
   const { id: teacherId } = useGetUser()
   const [form] = useForm()
   const [startClass, setStartClass] = useState(clazz.length)
+  const [options, setOptions] = useState([])
 
   const close = () => {
     form.resetFields()
@@ -28,17 +29,26 @@ export default function OpenCourseModal({ visible, setVisible, tableRef }) {
     method: 'post',
   })
 
+  const [getAllBuildingsState, makeGetAllBuildingsRequest] = useFetch({
+    url: API.getAllBuildings,
+    method: 'get',
+  })
+
+  const [, makeGetBuildingClazzRequest] = useFetch({
+    url: API.getBuildingClazz,
+    method: 'get',
+  })
+
   const formatData = values => {
     const {
-      address1,
-      address2,
+      address: [building, num],
       credit,
       name,
       time1,
       time2,
       timeRange: [startTime, endTime],
     } = values
-    const address = `${address1} ${address2}`
+
     const time = `第${time1}至${time2}节`
 
     return {
@@ -47,7 +57,8 @@ export default function OpenCourseModal({ visible, setVisible, tableRef }) {
       selectEnd: endTime.format('YYYY-MM-DDTHH:mm'),
       teacherId,
       credit,
-      address,
+      building,
+      num,
       time,
     }
   }
@@ -63,11 +74,42 @@ export default function OpenCourseModal({ visible, setVisible, tableRef }) {
   }
 
   useEffect(() => {
+    makeGetAllBuildingsRequest()
+  }, [])
+
+  useEffect(() => {
     if (createCourseState.fetchState === FetchState.Success) {
       tableRef.current.update()
       close()
     }
   }, [createCourseState])
+
+  useEffect(() => {
+    if (getAllBuildingsState.fetchState === FetchState.Success) {
+      const options = getAllBuildingsState.data.map(item => ({
+        value: item,
+        label: item,
+        isLeaf: false,
+      }))
+
+      setOptions(options)
+    }
+  }, [getAllBuildingsState])
+
+  const loadData = selectedOptions => {
+    const targetOption = selectedOptions[selectedOptions.length - 1]
+    targetOption.loading = true
+
+    makeGetBuildingClazzRequest({ params: { building: targetOption.value } }, data => {
+      targetOption.loading = false
+      targetOption.children = data.data.map(item => ({
+        label: item,
+        value: item,
+      }))
+
+      setOptions([...options])
+    })
+  }
 
   return (
     <Modal
@@ -96,7 +138,7 @@ export default function OpenCourseModal({ visible, setVisible, tableRef }) {
         <Form.Item label="学分" name="credit" rules={[{ required: true, message: '请输入学分！' }]}>
           <InputNumber min={0} placeholder="学分" />
         </Form.Item>
-        <Form.Item label="上课时间">
+        <Form.Item label="上课时间" required>
           <div className="from-items-inline">
             <Form.Item name="time1" rules={[{ required: true, message: '请输入开始节数！' }]}>
               <Select placeholder="开始节数" onSelect={selectStartClass}>
@@ -114,23 +156,12 @@ export default function OpenCourseModal({ visible, setVisible, tableRef }) {
             </Form.Item>
           </div>
         </Form.Item>
-        <Form.Item label="上课地点">
-          <div className="from-items-inline">
-            <Form.Item name="address1" rules={[{ required: true, message: '请输入教学楼！' }]}>
-              <Select placeholder="教学楼">
-                {building.map(item => (
-                  <Option key={item}>{item}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="address2" rules={[{ required: true, message: '请输入课室！' }]}>
-              <Select placeholder="课室">
-                {classroom.map(item => (
-                  <Option key={item}>{item}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </div>
+        <Form.Item
+          label="上课地点"
+          name="address"
+          rules={[{ required: true, message: '请输入上课地点！' }]}
+        >
+          <Cascader placeholder="教学楼/课室" options={options} loadData={loadData} />
         </Form.Item>
       </Form>
     </Modal>

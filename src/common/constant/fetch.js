@@ -18,6 +18,8 @@ export const API = {
   getAllSpecInfo: '/api/speciality/getAllSpecInfo', // 分页获取所有专业信息
   importClazzStudents: '/api/clazz/importClazzStudents', // 导入班级学生信息
   exportClazzTemplate: '/api/clazz/exportClazzTemplate', // 导出班级学生信息模板
+  getAllBuildings: '/api/address/getAllBuildings', // 获取教学楼
+  getBuildingClazz: '/api/address/getBuildingClazz', // 获取教学楼内所有课室
 }
 
 export const FetchState = {
