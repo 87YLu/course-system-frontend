@@ -106,5 +106,5 @@ export default function AllCourse() {
     })
   }
 
-  return <PubTable {...pubTableProps} />
+  return <PubTable {...pubTableProps} name="allCourse" />
 }

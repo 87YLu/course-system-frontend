@@ -56,8 +56,8 @@ export default function Login() {
                 password: '123',
               }}
             >
-              <Form.Item name="account" rules={[{ required: true, message: '请输入用户名！' }]}>
-                <Input bordered={false} prefix={<UserOutlined />} placeholder="请输入用户名" />
+              <Form.Item name="account" rules={[{ required: true, message: '请输入账号！' }]}>
+                <Input bordered={false} prefix={<UserOutlined />} placeholder="请输入账号" />
               </Form.Item>
               <Form.Item name="password" rules={[{ required: true, message: '请输入密码！' }]}>
                 <Input.Password

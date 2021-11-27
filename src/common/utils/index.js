@@ -93,3 +93,17 @@ export const ExportExcel = ({ url, fileName = 'excel', params, callback }) => {
       callback && callback()
     })
 }
+
+export const validateNecessaryProps = (componentName, necessaryProps) => {
+  const missingProps = []
+
+  Object.keys(necessaryProps).forEach(key => {
+    if (necessaryProps[key] == null) {
+      missingProps.push(key)
+    }
+  })
+
+  if (missingProps.length > 0) {
+    throw new Error(`${componentName} 组件中，${missingProps.join('，')} 是必传参数`)
+  }
+}

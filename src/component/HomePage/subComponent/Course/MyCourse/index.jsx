@@ -58,7 +58,7 @@ export default function MyCourse() {
           新增授课
         </Button>
       )}
-      <PubTable {...pubTableProps} tableRef={tableRef} />
+      <PubTable {...pubTableProps} tableRef={tableRef} name="myCourse" />
       <OpenCourseModal visible={visible} setVisible={setVisible} tableRef={tableRef} />
     </Fragment>
   )
