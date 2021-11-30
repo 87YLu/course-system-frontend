@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useState, useRef } from 'react'
-import { Button, Space, Upload } from 'antd'
+import { Button, Space, Upload, Input } from 'antd'
+import { debounce } from 'lodash'
 import { useGetUser } from '@hooks'
 import { API } from '@constant'
 import { PubTable } from '@Public'
@@ -147,18 +148,26 @@ export default function MyCourse() {
     },
   }
 
+  const handleChange = debounce(e => {
+    tableRef.current.update({
+      params: { userId, name: e.target.value },
+    })
+  }, 200)
+
   return (
     <Fragment>
-      {roleEnum[role] === '老师' && (
-        <Button
-          style={{ marginBottom: '20px' }}
-          onClick={() => {
-            setVisible(true)
-          }}
-        >
-          新增授课
-        </Button>
-      )}
+      <Space style={{ marginBottom: '20px' }}>
+        <Input addonBefore="查询课程" onChange={handleChange} />
+        {roleEnum[role] === '老师' && (
+          <Button
+            onClick={() => {
+              setVisible(true)
+            }}
+          >
+            新增授课
+          </Button>
+        )}
+      </Space>
       <PubTable {...pubTableProps} tableRef={tableRef} name="myCourse" />
       <OpenCourseModal visible={visible} setVisible={setVisible} tableRef={tableRef} />
     </Fragment>

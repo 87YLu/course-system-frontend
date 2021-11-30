@@ -6,7 +6,6 @@ import { useGetUser } from '@hooks'
 import { roleEnum, getLocationPath } from '@utils'
 import AllCourse from './AllCourse'
 import MyCourse from './MyCourse'
-import './index.less'
 
 export default function Course() {
   const { role } = useGetUser()

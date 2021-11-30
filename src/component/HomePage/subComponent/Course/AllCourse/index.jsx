@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react'
-import { Button, message, Modal } from 'antd'
+import React, { useEffect, useRef, Fragment } from 'react'
+import { Button, message, Modal, Input, Space } from 'antd'
 import moment from 'moment'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { debounce } from 'lodash'
 import { API, FetchState } from '@constant'
 import { PubTable } from '@Public'
 import { useGetUser, useFetch } from '@hooks'
@@ -16,6 +17,7 @@ export default function AllCourse() {
     url: API.selectCourse,
     method: 'post',
   })
+  const tableRef = useRef(null)
 
   const formatSelectTime = time => {
     return moment(time).format('YYYY-MM-DD HH:mm')
@@ -46,7 +48,8 @@ export default function AllCourse() {
           const { selectStart, selectEnd } = record
           return (
             <div>
-              开始：{formatSelectTime(selectStart)}<br />
+              开始：{formatSelectTime(selectStart)}
+              <br />
               结束：{formatSelectTime(selectEnd)}
             </div>
           )
@@ -79,6 +82,12 @@ export default function AllCourse() {
     })
   }
 
+  const handleChange = debounce(e => {
+    tableRef.current.update({
+      params: { name: e.target.value },
+    })
+  }, 200)
+
   useEffect(() => {
     if (selectCourseState.fetchState === FetchState.Success) {
       message.success('选课成功')
@@ -106,5 +115,12 @@ export default function AllCourse() {
     })
   }
 
-  return <PubTable {...pubTableProps} name="allCourse" />
+  return (
+    <Fragment>
+      <Space style={{ marginBottom: '20px' }}>
+        <Input addonBefore="查询课程" onChange={handleChange} />
+      </Space>
+      <PubTable {...pubTableProps} tableRef={tableRef} name="allCourse" />
+    </Fragment>
+  )
 }

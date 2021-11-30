@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Form, Input, InputNumber, DatePicker, Select, Cascader } from 'antd'
 import { useGetUser, useFetch } from '@hooks'
 import { API, FetchState } from '@constant'
+import './index.less'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
