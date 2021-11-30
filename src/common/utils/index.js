@@ -39,9 +39,7 @@ export const getTop = element => {
 }
 
 export const getLocationPath = level => {
-  const href = window.location.href
-  const origin = window.location.origin
-  return href.replace(origin, '').split('/')[level]
+  return window.location.pathname.split('/')[level]
 }
 
 export const UploadFile = ({ data, url, callback }) => {

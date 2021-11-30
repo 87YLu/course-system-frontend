@@ -43,7 +43,7 @@ export default function HomePage() {
           defaultSelectedKeys={getLocationPath(2)}
           style={{ width: '250px' }}
         >
-          {homePageRouter.map(component => {
+          {homePageRouter[user.role].map(component => {
             const { linkTo, key, name } = component
             return (
               <Menu.Item key={key}>
@@ -80,7 +80,7 @@ export default function HomePage() {
           bordered={false}
         >
           <Routes>
-            {homePageRouter.map(component => {
+            {homePageRouter[user.role].map(component => {
               const { path, key, element } = component
               return <Route path={path} key={key} element={element} />
             })}

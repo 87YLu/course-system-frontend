@@ -20,6 +20,9 @@ export const API = {
   exportClazzTemplate: '/api/clazz/exportClazzTemplate', // 导出班级学生信息模板
   getAllBuildings: '/api/address/getAllBuildings', // 获取教学楼
   getBuildingClazz: '/api/address/getBuildingClazz', // 获取教学楼内所有课室
+  deleteCollege: '/api/college/deleteCollege', // 删除学院
+  updateCollege: '/api/college/updateCollege', // 修改学院信息
+  addCollege: '/api/college/addCollege', // 新增学院
 }
 
 export const FetchState = {
