@@ -3,6 +3,7 @@ import { Menu } from 'antd'
 import { Link, Routes, Route } from 'react-router-dom'
 import { getLocationPath } from '@utils'
 import College from './College'
+import Speciality from './Speciality'
 
 export default function Message() {
   const [currentMenu, setCurrentMenu] = useState(getLocationPath(3))
@@ -28,7 +29,7 @@ export default function Message() {
 
       <Routes>
         <Route path="college" key="college" element={<College />} />
-        <Route path="speciality" key="speciality" element={<div>2</div>} />
+        <Route path="speciality" key="speciality" element={<Speciality />} />
       </Routes>
     </Fragment>
   )

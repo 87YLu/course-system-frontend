@@ -1,34 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useRef, useState, Fragment } from 'react'
+import React, { useRef, useState, useEffect, Fragment } from 'react'
 import { Button, Space, Modal, message } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useFetch } from '@hooks'
 import { API } from '@constant'
 import { PubTable } from '@Public'
 import ActionModal from './ActionModal'
+import { useSelector } from 'react-redux'
 
 const { confirm } = Modal
 
-export default function College() {
+export default function Speciality() {
   const tableRef = useRef(null)
   const [visible, setVisible] = useState(false)
   const [record, setRecord] = useState({})
   const [action, setAction] = useState('add')
+  const college = useSelector(state => state.college.data)
 
-  const [, makeDeleteCollegeRequest] = useFetch({
-    url: API.deleteCollege,
+  const [, makeDeleteSpecialityRequest] = useFetch({
+    url: API.deleteSpeciality,
     method: 'post',
   })
 
-  const [, makeUpdateCollegeRequest] = useFetch({
-    url: API.updateCollege,
+  const [, makeUpdateSpecialityRequest] = useFetch({
+    url: API.updateSpeciality,
     method: 'post',
   })
 
-  const [, makeAddCollegeRequest] = useFetch({
-    url: API.addCollege,
+  const [, makeAddSpecialityRequest] = useFetch({
+    url: API.addSpeciality,
     method: 'post',
   })
+
+  const [, makeGetAllCollegeInfoRequest] = useFetch({
+    url: API.getAllCollegeInfo,
+    method: 'get',
+    name: 'college',
+  })
+
+  useEffect(() => {
+    if (Object.keys(college).length === 0) {
+      makeGetAllCollegeInfoRequest()
+    }
+  }, [college])
 
   const showConfirm = (id, name) => {
     confirm({
@@ -36,7 +50,7 @@ export default function College() {
       content: `确定删除 ${name}？`,
       onOk() {
         return new Promise(resolve => {
-          makeDeleteCollegeRequest({ params: { id } }, res => {
+          makeDeleteSpecialityRequest({ params: { id } }, res => {
             if (res.success) {
               message.success('删除成功')
               tableRef.current.update()
@@ -48,10 +62,10 @@ export default function College() {
     })
   }
 
-  const updateCollege = values => {
+  const updateSpeciality = values => {
     values.id = record.id
 
-    makeUpdateCollegeRequest({ data: values }, res => {
+    makeUpdateSpecialityRequest({ data: values }, res => {
       if (res.success) {
         message.success('修改成功')
         tableRef.current.update()
@@ -60,8 +74,8 @@ export default function College() {
     })
   }
 
-  const addCollege = values => {
-    makeAddCollegeRequest({ data: values }, res => {
+  const addSpeciality = values => {
+    makeAddSpecialityRequest({ data: values }, res => {
       if (res.success) {
         message.success('新增成功')
         tableRef.current.update()
@@ -73,14 +87,19 @@ export default function College() {
   const pubTableProps = {
     columns: [
       {
-        title: '学院名称',
+        title: '专业名称',
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: '学院介绍',
+        title: '专业介绍',
         dataIndex: 'introduction',
         key: 'introduction',
+      },
+      {
+        title: '所属学院',
+        dataIndex: 'collegeName',
+        key: 'collegeName',
       },
       {
         title: '操作',
@@ -115,8 +134,7 @@ export default function College() {
       },
     ],
     ajaxConfig: {
-      url: API.getAllCollegeInfo,
-      name: 'college',
+      url: API.getAllSpecInfo,
       method: 'get',
     },
   }
@@ -131,14 +149,14 @@ export default function College() {
           setVisible(true)
         }}
       >
-        新增学院
+        新增专业
       </Button>
       <PubTable {...pubTableProps} name="college" tableRef={tableRef} />
       <ActionModal
         visible={visible}
         setVisible={setVisible}
         record={record}
-        onOk={action === 'add' ? addCollege : updateCollege}
+        onOk={action === 'add' ? addSpeciality : updateSpeciality}
         action={action}
       />
     </Fragment>

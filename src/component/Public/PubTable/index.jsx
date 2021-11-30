@@ -8,7 +8,7 @@ import { getTop, validateNecessaryProps } from '@utils'
 export default function PubTable({
   columns,
   ajaxConfig,
-  name,
+  name: tableName,
   rowKey = 'id',
   tableRef,
   ...otherProps
@@ -16,13 +16,13 @@ export default function PubTable({
   const necessaryProps = {
     columns: columns,
     ajaxConfig: ajaxConfig,
-    name: name,
+    name: tableName,
   }
 
   validateNecessaryProps('PubTable', necessaryProps)
 
-  const { method, url, ...otherConfig } = ajaxConfig
-  const [requestState, makeRequest] = useFetch({ url, method })
+  const { method, url, name: reduxName = 'fetch', ...otherConfig } = ajaxConfig
+  const [requestState, makeRequest] = useFetch({ url, method, name: reduxName })
   const [dataSource, setDataSource] = useState([])
   const [updateKey, setUpdateKey] = useState(Math.random())
   const [scrollTop, setScrollTop] = useState(0)
@@ -62,7 +62,7 @@ export default function PubTable({
       })
 
       if (isUseIndexKey) {
-        console.warn(`name 为 ${name} 的 PubTable 正使用 index 作为 rowKey，请检查组件。`)
+        console.warn(`name 为 ${tableName} 的 PubTable 正使用 index 作为 rowKey，请检查组件。`)
       }
 
       setDataSource(data)
@@ -77,6 +77,7 @@ export default function PubTable({
 
   return (
     <Table
+      bordered={true}
       columns={columns}
       dataSource={dataSource}
       ref={ref}

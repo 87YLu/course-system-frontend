@@ -33,18 +33,18 @@ export default function ChangeModal({ visible, setVisible, record, onOk, action 
     >
       <Form form={form} {...layout} onFinish={onOk}>
         <Form.Item
-          label="学院名"
+          label="学院名称"
           name="name"
-          rules={[{ required: true, message: '请输入学院名！' }]}
+          rules={[{ required: true, message: '请输入学院名称！' }]}
         >
-          <Input />
+          <Input placeholder="学院名称"/>
         </Form.Item>
         <Form.Item
-          label="介绍"
+          label="学院介绍"
           name="introduction"
-          rules={[{ required: true, message: '请输入介绍！' }]}
+          rules={[{ required: true, message: '请输入学院介绍！' }]}
         >
-          <Input />
+          <Input placeholder="学院介绍"/>
         </Form.Item>
       </Form>
     </Modal>

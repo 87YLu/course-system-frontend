@@ -23,6 +23,9 @@ export const API = {
   deleteCollege: '/api/college/deleteCollege', // 删除学院
   updateCollege: '/api/college/updateCollege', // 修改学院信息
   addCollege: '/api/college/addCollege', // 新增学院
+  deleteSpeciality: '/api/speciality/deleteSpeciality', // 删除专业
+  addSpeciality: '/api/speciality/addSpeciality', // 新增专业
+  updateSpeciality: '/api/speciality/updateSpeciality', // 修改专业信息
 }
 
 export const FetchState = {
