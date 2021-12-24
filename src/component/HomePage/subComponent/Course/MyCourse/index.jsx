@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Fragment, useState, useRef } from 'react'
-import { Button, Space, Upload, Input } from 'antd'
+import { Button, Space, Upload, Input, message } from 'antd'
 import { debounce } from 'lodash'
 import { useGetUser } from '@hooks'
 import { API } from '@constant'
@@ -10,39 +10,44 @@ import OpenCourseModal from './OpenCourseModal'
 
 export default function MyCourse() {
   const [visible, setVisible] = useState(false)
-  const [exportStudentLoading, setExportStudentLoading] = useState(false)
-  const [exportGradeLoading, setExportGradeLoading] = useState(false)
-
-  const [importGradeLoading, setImportGradeLoading] = useState(false)
   const tableRef = useRef()
   const { id: userId, role } = useGetUser()
 
   const exportStudentCourseInfo = (name, courseId) => {
-    setExportStudentLoading(true)
+    message.info('导出中...')
     ExportExcel({
       url: API.exportStudentCourseInfo,
       fileName: `选${name}的学生名单`,
       params: { courseId },
-      callback: () => setExportStudentLoading(false),
+      success: () => {
+        message.destroy()
+        message.success('导出成功')
+      },
     })
   }
 
   const exportGradeExcel = (name, courseId) => {
-    setExportGradeLoading(true)
+    message.info('导出中...')
     ExportExcel({
       url: API.exportGradeExcel,
       fileName: `选${name}的学生的成绩`,
       params: { courseId },
-      callback: () => setExportGradeLoading(false),
+      success: () => {
+        message.destroy()
+        message.success('导出成功')
+      },
     })
   }
 
   const teacherImportGrade = (file, courseId) => {
-    setImportGradeLoading(true)
+    message.info('导入中...')
     UploadFile({
       data: { file, courseId, teacherId: userId },
       url: API.teacherImportGrade,
-      callback: () => setImportGradeLoading(false),
+      success: () => {
+        message.destroy()
+        message.success('导入成功')
+      },
     })
   }
 
@@ -105,7 +110,6 @@ export default function MyCourse() {
             <Space>
               <Button
                 size="small"
-                loading={exportStudentLoading}
                 onClick={() => {
                   exportStudentCourseInfo(name, id)
                 }}
@@ -114,7 +118,6 @@ export default function MyCourse() {
               </Button>
               <Button
                 size="small"
-                loading={exportGradeLoading}
                 onClick={() => {
                   exportGradeExcel(name, id)
                 }}
@@ -123,14 +126,12 @@ export default function MyCourse() {
               </Button>
               <Upload
                 beforeUpload={() => false}
-                showUploadList={false}
                 onChange={file => {
                   teacherImportGrade(file.file, id)
                 }}
+                showUploadList={false}
               >
-                <Button size="small" loading={importGradeLoading}>
-                  导入成绩
-                </Button>
+                <Button size="small">导入成绩</Button>
               </Upload>
             </Space>
           )

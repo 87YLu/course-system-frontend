@@ -26,6 +26,7 @@ export const API = {
   deleteSpeciality: '/api/speciality/deleteSpeciality', // 删除专业
   addSpeciality: '/api/speciality/addSpeciality', // 新增专业
   updateSpeciality: '/api/speciality/updateSpeciality', // 修改专业信息
+  getAllClazzInPage: '/api/clazz/getAllClazzInPage', // 分页获取班级信息
 }
 
 export const FetchState = {

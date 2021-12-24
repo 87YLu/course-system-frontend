@@ -59,12 +59,14 @@ export const UploadFile = ({ data, url, callback, success }) => {
     .post(url, param, config)
     .then(res => {
       if (res.data.success === false) {
+        message.destroy()
         message.error(res.data.message)
       } else {
         success && success(res)
       }
     })
     .catch(err => {
+      message.destroy()
       message.error(err.message)
     })
     .finally(_ => {
@@ -102,6 +104,7 @@ export const ExportExcel = ({ url, fileName = 'excel', params, callback , succes
       success && success(res)
     })
     .catch(err => {
+      message.destroy()
       message.error(err.message)
     })
     .finally(_ => {
