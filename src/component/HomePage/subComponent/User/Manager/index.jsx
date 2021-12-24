@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useRef, useEffect } from 'react'
-import { Button, Upload, Space, Radio } from 'antd'
+import { Button, Upload, Space, Radio, message } from 'antd'
 import { UploadFile, ExportExcel, roleEnum } from '@utils'
 import { API } from '@constant'
 import { PubTable } from '@Public'
@@ -27,7 +27,15 @@ export default function Manager() {
     UploadFile({
       data: { file, roleId: importRole },
       url: API.importUserInfo,
-      callback: () => {
+      success: () => {
+        message.success('导入成功')
+        tableRef.current.update({
+          params: {
+            roleId: showUserRole,
+          },
+        })
+      },
+      callback: _ => {
         setImportRole(-1)
         setUploading(false)
       },
@@ -125,7 +133,7 @@ export default function Manager() {
         </Radio.Group>
       </div>
 
-      <PubTable {...pubTableProps} tableRef={tableRef} name="userManager" />
+      <PubTable {...pubTableProps} tableRef={tableRef} name="userManager" rowKey="account" />
     </Fragment>
   )
 }

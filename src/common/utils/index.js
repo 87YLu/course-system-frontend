@@ -42,7 +42,7 @@ export const getLocationPath = level => {
   return window.location.pathname.split('/')[level]
 }
 
-export const UploadFile = ({ data, url, callback }) => {
+export const UploadFile = ({ data, url, callback, success }) => {
   const param = new FormData()
 
   Object.keys(data).forEach(key => {
@@ -60,6 +60,8 @@ export const UploadFile = ({ data, url, callback }) => {
     .then(res => {
       if (res.data.success === false) {
         message.error(res.data.message)
+      } else {
+        success && success(res)
       }
     })
     .catch(err => {
@@ -70,7 +72,7 @@ export const UploadFile = ({ data, url, callback }) => {
     })
 }
 
-export const ExportExcel = ({ url, fileName = 'excel', params, callback }) => {
+export const ExportExcel = ({ url, fileName = 'excel', params, callback , success }) => {
   const config = {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -96,6 +98,8 @@ export const ExportExcel = ({ url, fileName = 'excel', params, callback }) => {
       link.href = url
       link.setAttribute('download', fileName)
       link.click()
+
+      success && success(res)
     })
     .catch(err => {
       message.error(err.message)
